@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lazzy Manager</title>
+    <script src="script.js" defer></script>
+    <link rel="icon" href="#" />
+    <link rel="stylesheet" href="managerStyles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Unbounded:wght@200..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .unselectable {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+    </style>
+  </head>
+  <header>
+    <div class="inner">
+      <div class="panel">
+        <span id="iconLazzy" class="unselectable"><b>Lazzy</b></span>
+
+        <nav class="unselectable">
+          <ul>
+            <li><span id="dbBtn">Сохраненные пароли</span></li>
+            <li><span id="settingsBtn">Настройки</span></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <body>
+    <div class="window-container">
+      <div class="length-container">
+        <p id="lengthPass" class="unselectable">10</p>
+      </div>
+      <div class="input-container">
+        <input id="domainInput" placeholder="Домен" />
+        <input id="logInput" placeholder="Логин" />
+        <button id="doSmth">Выполнить</button>
+      </div>
+    </div>
+  </body>
+</html>
