@@ -16,6 +16,7 @@
 }
 
 nav ul {
+  padding: 0 20px;
   list-style: none;
   display: flex;
   align-items: center;
@@ -146,18 +147,15 @@ body {
   justify-content: center;
 }
 
-.Notification h1 {
+.Notification h1, .Result h1{
   font-size: 18px;
-  margin-left: 10px;
 }
 
-.Result h1 {
-  font-size: 18px;
-}
+.Notification p, .Notification h1
+  margin-left: 10px;
 
 .Notification p {
   font-size: 15px;
-  margin-left: 10px;
 }
 
 .Result p {
@@ -176,10 +174,6 @@ body {
   width: 50%;
   height: 50px;
   cursor: pointer;
-}
-
-.buttonS {
-  display: flex;
 }
 
 .passCreate {
