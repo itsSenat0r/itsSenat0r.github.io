@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lazzy Manager</title>
+    <title>Lazzy</title>
     <script src="script.js" defer></script>
-    <link rel="icon" href="#" />
+    <link rel="icon" href="key.png" />
     <link rel="stylesheet" href="managerStyles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,6 +42,7 @@
     <div class="window-container">
       <div class="length-container">
         <p id="lengthPass" class="unselectable">10</p>
+        <input type="range" max="60" value="10" style="display: none" id="range">
       </div>
       <div class="input-container">
         <input id="domainInput" placeholder="Домен" />

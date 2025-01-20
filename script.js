@@ -1,6 +1,9 @@
 const HEADER = document.querySelector("header");
+const BODY = document.querySelector("body");
 let RES = "";
 let DATA_ARRAY = [];
+
+// работа с сессионной базой
 class DATABASE_FOR_THIS_SESSION {
   constructor() {
     this.data = DATA_ARRAY;
@@ -22,6 +25,26 @@ class DATABASE_FOR_THIS_SESSION {
     return this.data;
   }
 }
+
+// проверка юзер-агента пользователя
+const checkUA = function () {
+  const who = navigator.userAgent;
+  const args = /Android|iPhone|Phone|iPad|KFAPWI/;
+  return (fin = who.match(args));
+};
+if (checkUA()) {
+  const e = document.querySelector('#range');
+  e.setAttribute('style', 'display: visible')
+}
+
+// обработка ползунка
+const rngMv = function() {
+  const e = document.querySelector('#range');
+  e.addEventListener('change', () => {
+    const a = document.querySelector('#lengthPass');
+    a.innerHTML = e.value;
+  })
+}();
 
 /* взаимодействие пользователя с UI */
 // установка длины пароля
@@ -102,25 +125,17 @@ passArr.addEventListener("click", function () {
       });
       const filesURL = URL.createObjectURL(file);
       const b = document.querySelector("#downloadBtn");
-      b.setAttribute("href", filesURL);
-      b.setAttribute("download", "database.json");
-      URL.revokeObjectURL(filesURL);
 
       // скачивание файла
-      document
-        .querySelector("#downloadBtn")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          try {
-            // асинхронный запрос на скачивание файла
-            (async function () {
-              const response = await fetch(filesURL);
-              const data = await response.json();
-            })();
-          } catch (e) {
-            console.log(e);
-          }
-        });
+      b.addEventListener("click", function (ev) {
+        const a = document.createElement("a");
+        a.href = filesURL;
+        a.download = "database.json";
+        BODY.appendChild(a);
+        a.click();
+        BODY.removeChild(a);
+        URL.revokeObjectURL(filesURL);
+      });
     }, 1);
   } else {
     Div.innerHTML += `<div> <h1>Пусто!</h1> </div>`;
@@ -136,7 +151,7 @@ passArr.addEventListener("click", function () {
 
   Div.setAttribute("class", "Result");
   Div.classList.add("animationNotif");
-  HEADER.appendChild(Div);
+  document.body.insertBefore(Div, document.querySelector(".window-container"));
 });
 
 /* UI */
