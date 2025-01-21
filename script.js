@@ -27,24 +27,22 @@ class DATABASE_FOR_THIS_SESSION {
 }
 
 // проверка юзер-агента пользователя
-const checkUA = function () {
+function checkUA() {
   const who = navigator.userAgent;
   const args = /Android|iPhone|Phone|iPad|KFAPWI/;
-  return (fin = who.match(args));
-};
+  return who.match(args);
+}
 if (checkUA()) {
-  const e = document.querySelector('#range');
-  e.setAttribute('style', 'display: visible')
+  const e = document.querySelector("#range");
+  e.setAttribute("style", "display: visible");
 }
 
 // обработка ползунка
-const rngMv = function() {
-  const e = document.querySelector('#range');
-  e.addEventListener('change', () => {
-    const a = document.querySelector('#lengthPass');
-    a.innerHTML = e.value;
-  })
-}();
+const e = document.querySelector("#range");
+e.addEventListener("change", () => {
+  const a = document.querySelector("#lengthPass");
+  a.innerHTML = e.value;
+});
 
 /* взаимодействие пользователя с UI */
 // установка длины пароля
@@ -60,12 +58,21 @@ selectLen.addEventListener("wheel", function (event) {
 const btn = document.querySelector("#doSmth");
 btn.addEventListener("click", function () {
   passGen(Number(selectLen.innerHTML));
-  new DATABASE_FOR_THIS_SESSION().addData();
-  notificationAdd(
-    "Уведомление",
-    `Пароль был сгенерирован, данные сохранены в базу. Для просмотра сохраненных паролей нажмите кнопку "Сохраненные пароли". <b>Нажатие на уведомление скопирует пароль.</b>`,
-    "PasswordCreate"
-  );
+  if (!document.querySelector("#logInput").value) {
+    copyPassword(RES, 2);
+    notificationAdd(
+      "Предупреждение",
+      "Пароль был сгенерирован и скопирован в буфер обмена, но Lazzy не сохраняет пароли без логинов. Введите логин, и данные сохранятся во временную базу.",
+      "Warning"
+    );
+  } else {
+    new DATABASE_FOR_THIS_SESSION().addData();
+    notificationAdd(
+      "Уведомление",
+      `Пароль был сгенерирован, данные сохранены в базу. Для просмотра сохраненных паролей нажмите кнопку "Сохраненные пароли". <b>Нажатие на уведомление скопирует пароль.</b>`,
+      "PasswordCreate"
+    );
+  }
 });
 
 // работа с длиной пароля
@@ -92,7 +99,6 @@ function passGen(len) {
     const math = Math.round(Math.random() * (a.length - 1));
     RES += a[math];
   }
-  return RES;
 }
 
 // работа с сохраненными паролями
@@ -104,9 +110,17 @@ passArr.addEventListener("click", function () {
     "<div id='resultWindow'> <h1>Результаты за эту сессию:</h1></div>";
   if (savedPass[0]) {
     // вывод данных
-    for (let i = 0; i < savedPass.length; i++) {
-      Div.innerHTML += `<div> <h1>Домен: ${savedPass[i].site} </h1> <p>Логин: ${savedPass[i].username} </p> <p>Пароль: ${savedPass[i].pass} </p> </div>`;
-    }
+    new Promise(() => {
+      for (let i = 0; i < savedPass.length; i++) {
+        Div.innerHTML += `<div id="a${i}" class="clckToCp"> <h1>Домен: ${savedPass[i].site} </h1> <p>Логин: ${savedPass[i].username} </p> <p>Пароль: ${savedPass[i].pass} </p> </div>`;
+        setTimeout(() => {
+          const l = document.querySelector(`#a${i}`);
+          l.addEventListener("click", () => {
+            copyPassword(savedPass[i].pass, 2);
+          });
+        });
+      }
+    });
     Div.innerHTML +=
       '<div id="buttonS"><button class="closeBtn"><b>Закрыть</b></button> <button id="downloadBtn"><b>Скачать</b></button></div>';
 
@@ -154,6 +168,19 @@ passArr.addEventListener("click", function () {
   document.body.insertBefore(Div, document.querySelector(".window-container"));
 });
 
+function copyPassword(a, type) {
+  const passCopy = a;
+  let passFind;
+  switch (type) {
+    case 1:
+      passFind = passCopy[passCopy.length - 1].pass;
+      break;
+    case 2:
+      passFind = a;
+  }
+  navigator.clipboard.writeText(passFind);
+}
+
 /* UI */
 // уведомление
 function notificationAdd(header, message, type) {
@@ -175,15 +202,15 @@ function notificationAdd(header, message, type) {
       Div.style.backgroundColor = "rgb(255, 85, 85)";
       break;
     case "Warning":
-      Div.style.backgroundColor = "rgb(195, 209, 0)";
+      Div.style.backgroundColor = "rgb(255, 255, 0)";
+      Div.style.color = "black";
       break;
     case "PasswordCreate":
       Div.style.backgroundColor = "gray";
       // копирование пароля
       Div.addEventListener("click", function () {
-        const passCopy = new DATABASE_FOR_THIS_SESSION().getData();
-        const passFind = passCopy[passCopy.length - 1].pass;
-        navigator.clipboard.writeText(passFind);
+        const b = new DATABASE_FOR_THIS_SESSION().getData();
+        copyPassword(b, 1);
         Div.setAttribute("class", "unselectable Notification passCreate");
         setTimeout(() => {
           Div.style.backgroundColor = "rgb(0, 189, 0)";

@@ -29,6 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 
 #iconLazzy {
@@ -99,7 +100,7 @@ body {
 #doSmth:hover {
   animation-name: hoverBtn;
   animation-duration: 0.2s;
-  background-color:rgb(255, 85, 85);
+  background-color: rgb(255, 85, 85);
   border-color: rgb(255, 85, 85);
   color: white;
 }
@@ -161,6 +162,7 @@ body {
 }
 
 #buttonS {
+  gap: 10px;
   display: flex;
 }
 
@@ -174,6 +176,10 @@ body {
 .Result div:not(:first-child) h1,
 .Result div:not(:first-child) p {
   margin: 12px;
+}
+
+.Result div p {
+  overflow-wrap: break-word;
 }
 
 .Result:first-child {
@@ -255,9 +261,6 @@ body {
 @keyframes textNotifAdd {
   from {
     color: rgba(0, 0, 0, 0);
-  }
-  to {
-    color: rgba(255, 255, 255, 1);
   }
 }
 @keyframes notifDelete {
